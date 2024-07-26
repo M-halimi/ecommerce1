@@ -8,7 +8,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/product', [ProductController::class]);
+Route::get('/product', [ProductController::class,'index']);
+
+Route::get('addnewproduct/create',[ProductController::class, 'create']);
+Route::post('addnewproduct',[ProductController::class, 'store']);
 
 
 

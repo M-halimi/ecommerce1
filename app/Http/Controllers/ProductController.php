@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('livewire.product',compact('products'));
+        $categories = Categorie::all();
+        return view('livewire.product',compact('products','categories'));
+        
     }
 
     /**
@@ -21,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('product.addnewproduct');
     }
 
     /**
@@ -29,7 +32,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+          'Titre'=>'require',
+          'Description'=>'require',
+          'Prix'=>'require',
+          'image'=>'require',
+          'categorie_id' => 'required|exists:categories,id',
+        ]);
+        Product::create($request->post);
+        return redirect()->route('product');
     }
 
     /**
